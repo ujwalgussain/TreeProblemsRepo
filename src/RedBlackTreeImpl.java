@@ -20,6 +20,14 @@ public class RedBlackTreeImpl {
         {
 
         }
+        boolean search(Node root1 ,int data)
+        {
+            if(root1 == null)
+                return false;
+            if(root1.data == data)
+                return true;
+            return (data < root1.data)?search(root1.left,data):search(root1.right,data);
+        }
         void insertNode(int data)
         {
             insert(new Node(data));
@@ -192,5 +200,6 @@ public class RedBlackTreeImpl {
         tree.insertNode(5);
         System.out.println("After insertion of 5");
         tree.display_LOT();
+        System.out.println(tree.search(tree.root,5));
     }
 }
