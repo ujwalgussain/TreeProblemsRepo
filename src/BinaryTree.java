@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.List;
 
 public class BinaryTree {
     Node root;
@@ -6,12 +7,16 @@ public class BinaryTree {
     {
         root=null;
     }
+    public BinaryTree(Node root)
+    {
+        this.root = root;
+    }
     public void insertAsLOT(int data)
     {
         Node newNode = new Node(data);
         if(root == null){
             root = newNode;
-            System.out.println("Tree Empty. Inserted " + data);
+            System.out.println("Tree Empty. Inserted as ROOT" + data);
             return;
         }
         LinkedList<Node> queue = new LinkedList<>();
@@ -40,6 +45,15 @@ public class BinaryTree {
             }
         }
     }
+    public void insertNodesInLOTOrder(int... data)
+    {
+        for(int i: data)
+        {
+            insertAsLOT(i);
+            //System.out.print("After insertion "+ i + " Tree ");
+            LOT();
+        }
+    }
     public void LOT()
     {
         if(root == null){
@@ -63,6 +77,35 @@ public class BinaryTree {
             }
         }
         System.out.println("Tree-> " + s);
+    }
+    public void LOTwithDesc()
+    {
+        if(root == null){
+            System.out.println("Tree Empty");
+            return;
+        }
+        LinkedList<Node> queue = new LinkedList<>();
+        queue.addLast(root);
+        StringBuilder s = new StringBuilder();
+        StringBuilder desc =new StringBuilder();
+        desc.append("ROOT is ").append(root.getData());
+        while(!queue.isEmpty())
+        {
+            Node temp = queue.removeFirst();
+            s.append(temp.getData()).append(" ");
+            if(temp.hasLeft())
+            {
+                desc.append(String.format("\n%s is LEFT OF %s",temp.left.getData(),temp.getData()));
+                queue.addLast(temp.getLeft());
+            }
+            if(temp.hasRight())
+            {
+                desc.append(String.format("\n%s is RIGHT OF %s",temp.right.getData(),temp.getData()));
+                queue.addLast(temp.getRight());
+            }
+        }
+        System.out.println("Tree-> " + s);
+        System.out.println("DESC -> "+ desc);
     }
     public boolean hasLeafNodes(Node n) {
         if(n.hasLeft() && n.hasRight())
@@ -134,4 +177,40 @@ public class BinaryTree {
             System.out.println("Deleted Successfully");
         }
     }
+    void createTreeUsingLOT(LinkedList<Integer> list)
+    {
+        int child = 0;
+        LinkedList<Node> l = new LinkedList<>();
+        Node parent = new Node(list.removeFirst());
+        root = parent;
+        l.add(parent);
+        int i=0;
+        while(!list.isEmpty())
+        {
+            Integer childdata = list.removeFirst();
+            if(childdata!=null)
+            {
+                Node childNode = new Node(childdata);
+                if(child ==0)
+                {
+                    parent.setLeft(childNode);
+                }
+                else if(child==1)
+                {
+                    parent.setRight(childNode);
+                }
+                else{
+                    System.out.println("You Shouldnt be here");
+                }
+                l.addLast(childNode);
+            }
+            child++;
+            if(child ==2)
+            {
+                parent = l.removeFirst();
+                child = 0;
+            }
+        }
+    }
+
 }

@@ -13,7 +13,6 @@ public class RedBlackTreeImpl {
             parent=null;
             color = 'R';
         }
-
     }
     class RedBlackTree{
         Node root = null; int count = 0;
@@ -31,8 +30,7 @@ public class RedBlackTreeImpl {
             {
                 root =z;
             }
-            else
-                {
+            else {
                 Node temp1 = root,temp2=null;
                 while(temp1!=null)
                 {
@@ -53,20 +51,25 @@ public class RedBlackTreeImpl {
             fixup(z);
             System.out.println("Fixup Done");
         }
-
+        String getData(Node n)
+        {
+            return n==null?null:n.data+"|"+n.color;
+        }
         void fixup(Node z)
         {
             //No need of checking parent and Grand parent bcoz z.parent.color=='R' only when level is 3
             /*1st node will be black...2nd node will be red hence condition will be false....*/
             if(z.parent!=null)
             {
-                System.out.println("Z = "+ root.data);
-                while(z.parent.color=='R' && z.color!='B' && root !=z)
+                System.out.println("ROOT = "+ root.data);
+                while(z.parent!=null && z.parent.color=='R')
                 {
-                    System.out.println("Fixing z = " + z.data);
+                  /*  System.out.println("Before Fixup");
+                    display_LOT();
+                    System.out.println("Fixing z = " + z.data + " parent = " + getData(z.parent) + " grandparent=" + getData(z.parent.parent));*/
                     if(z.parent == z.parent.parent.left)
                     {
-                        System.out.println(String.format("Parent %d is a left child of GrandParent %d", z.parent,z.parent.parent));
+                        System.out.println(String.format("Parent %s is a left child of GrandParent %s", getData(z.parent),getData(z.parent.parent)));
                         Node y = z.parent.parent.right;
                         if(y!=null && y.color == 'R')
                         {
@@ -80,7 +83,7 @@ public class RedBlackTreeImpl {
                         {
                             if(z == z.parent.right)
                             {
-                                System.out.println(String.format("%d i"));
+                               // System.out.println(String.format("%d i"));
                                 z = z.parent;
                                 left_rotate(z);
                             }
@@ -91,6 +94,7 @@ public class RedBlackTreeImpl {
                     }
                     else
                     {
+                        System.out.println(String.format("Parent %s is a left child of GrandParent %s", getData(z.parent),getData(z.parent.parent)));
                         Node y = z.parent.parent.left;
                         if(y!=null && y.color == 'R')
                         {
@@ -111,6 +115,7 @@ public class RedBlackTreeImpl {
                             left_rotate(z.parent.parent);
                         }
                     }
+                    System.out.println("After loop Z = " +getData(z) );
                 }
             }
             root.color='B';
@@ -181,8 +186,11 @@ public class RedBlackTreeImpl {
         tree.insertNode(3);
         System.out.println("After insertion of 3");
         tree.display_LOT();
-        tree.insertNode(4);
+       tree.insertNode(4);
         System.out.println("After insertion of 4");
+       tree.display_LOT();
+        tree.insertNode(5);
+        System.out.println("After insertion of 5");
         tree.display_LOT();
     }
 }
