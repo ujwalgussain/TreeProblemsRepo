@@ -177,40 +177,58 @@ public class BinaryTree {
             System.out.println("Deleted Successfully");
         }
     }
-    void createTreeUsingLOT(LinkedList<Integer> list)
+
+    //==============Approach 1============================//
+    Node createTreeUsingLOT_helper(int [] arr, int i)
     {
-        int child = 0;
-        LinkedList<Node> l = new LinkedList<>();
-        Node parent = new Node(list.removeFirst());
-        root = parent;
-        l.add(parent);
-        int i=0;
-        while(!list.isEmpty())
+        if(i>=arr.length)
         {
-            Integer childdata = list.removeFirst();
-            if(childdata!=null)
-            {
-                Node childNode = new Node(childdata);
-                if(child ==0)
-                {
-                    parent.setLeft(childNode);
-                }
-                else if(child==1)
-                {
-                    parent.setRight(childNode);
-                }
-                else{
-                    System.out.println("You Shouldnt be here");
-                }
-                l.addLast(childNode);
-            }
-            child++;
-            if(child ==2)
-            {
-                parent = l.removeFirst();
-                child = 0;
-            }
+            return null;
+        }
+        if(arr[i] == -1)
+        {
+            return null;
+        }
+        Node current = new Node(arr[i]);
+        int left = 2*i;
+        current.setLeft(createTreeUsingLOT_helper(arr,left));
+        int right = left+1;
+        current.setRight(createTreeUsingLOT_helper(arr,right));
+        return current;
+    }
+    void createTreeUsingLOT(boolean approach1,int... arr)
+    {
+        if(approach1)
+            root = createTreeUsingLOT_helper(arr,1);
+        else
+        {
+            Node root = new Node(arr[1]);
+            createTree(arr,root,1);
         }
     }
-
+    //========================Approach2=======================//
+    //==================Incomplete===================
+    private void createTree(int arr[], Node root, int i)
+    {
+        int left = 2*i, right = left+1;
+        if(i>=arr.length || left>=arr.length || right >= arr.length)
+        {
+            return;
+        }
+        if(this.root == null)
+        {
+            this.root = root;
+        }
+        if(arr[left]!=-1)
+        {
+            Node leftNode = new Node(arr[left]);
+            root.setLeft(leftNode);
+            createTree(arr,leftNode,left);
+        }
+       if(arr[right] !=-1) {
+           Node rightNode = new Node(arr[left]);
+           root.setRight(rightNode);
+           createTree(arr, rightNode, right);
+       }
+    }
 }
